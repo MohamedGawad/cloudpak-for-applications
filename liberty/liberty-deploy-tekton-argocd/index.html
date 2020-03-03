@@ -1,0 +1,853 @@
+
+
+
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      <meta http-equiv="x-ua-compatible" content="ie=edge">
+      
+      
+      
+      
+        <meta name="lang:clipboard.copy" content="Copy to clipboard">
+      
+        <meta name="lang:clipboard.copied" content="Copied to clipboard">
+      
+        <meta name="lang:search.language" content="en">
+      
+        <meta name="lang:search.pipeline.stopwords" content="True">
+      
+        <meta name="lang:search.pipeline.trimmer" content="True">
+      
+        <meta name="lang:search.result.none" content="No matching documents">
+      
+        <meta name="lang:search.result.one" content="1 matching document">
+      
+        <meta name="lang:search.result.other" content="# matching documents">
+      
+        <meta name="lang:search.tokenizer" content="[\s\-]+">
+      
+      <link rel="shortcut icon" href="../../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.1, mkdocs-material-4.6.3">
+    
+    
+      
+        <title>Liberty - Deploy using Tekton (OpenShift Pipelines) and ArgoCD on OCP 4.3 - Application Modernization</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/stylesheets/application.adb8469c.css">
+      
+      
+    
+    
+      <script src="../../assets/javascripts/modernizr.86422ebf.js"></script>
+    
+    
+      
+        <link href="https://fonts.gstatic.com" rel="preconnect" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,400i,700%7CRoboto+Mono&display=fallback">
+        <style>body,input{font-family:"Roboto","Helvetica Neue",Helvetica,Arial,sans-serif}code,kbd,pre{font-family:"Roboto Mono","Courier New",Courier,monospace}</style>
+      
+    
+    <link rel="stylesheet" href="../../assets/fonts/material-icons.css">
+    
+    
+    
+      
+    
+    
+  </head>
+  
+    <body dir="ltr">
+  
+    <svg class="md-svg">
+      <defs>
+        
+        
+          <svg xmlns="http://www.w3.org/2000/svg" width="416" height="448" viewBox="0 0 416 448" id="__github"><path fill="currentColor" d="M160 304q0 10-3.125 20.5t-10.75 19T128 352t-18.125-8.5-10.75-19T96 304t3.125-20.5 10.75-19T128 256t18.125 8.5 10.75 19T160 304zm160 0q0 10-3.125 20.5t-10.75 19T288 352t-18.125-8.5-10.75-19T256 304t3.125-20.5 10.75-19T288 256t18.125 8.5 10.75 19T320 304zm40 0q0-30-17.25-51T296 232q-10.25 0-48.75 5.25Q229.5 240 208 240t-39.25-2.75Q130.75 232 120 232q-29.5 0-46.75 21T56 304q0 22 8 38.375t20.25 25.75 30.5 15 35 7.375 37.25 1.75h42q20.5 0 37.25-1.75t35-7.375 30.5-15 20.25-25.75T360 304zm56-44q0 51.75-15.25 82.75-9.5 19.25-26.375 33.25t-35.25 21.5-42.5 11.875-42.875 5.5T212 416q-19.5 0-35.5-.75t-36.875-3.125-38.125-7.5-34.25-12.875T37 371.5t-21.5-28.75Q0 312 0 260q0-59.25 34-99-6.75-20.5-6.75-42.5 0-29 12.75-54.5 27 0 47.5 9.875t47.25 30.875Q171.5 96 212 96q37 0 70 8 26.25-20.5 46.75-30.25T376 64q12.75 25.5 12.75 54.5 0 21.75-6.75 42 34 40 34 99.5z"/></svg>
+        
+      </defs>
+    </svg>
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" data-md-component="overlay" for="__drawer"></label>
+    
+      <a href="#liberty-deploy-using-tekton-openshift-pipelines-and-argocd-on-ocp-43" tabindex="0" class="md-skip">
+        Skip to content
+      </a>
+    
+    
+      <header class="md-header" data-md-component="header">
+  <nav class="md-header-nav md-grid">
+    <div class="md-flex">
+      <div class="md-flex__cell md-flex__cell--shrink">
+        <a href="../.." title="Application Modernization" aria-label="Application Modernization" class="md-header-nav__button md-logo">
+          
+            <i class="md-icon"></i>
+          
+        </a>
+      </div>
+      <div class="md-flex__cell md-flex__cell--shrink">
+        <label class="md-icon md-icon--menu md-header-nav__button" for="__drawer"></label>
+      </div>
+      <div class="md-flex__cell md-flex__cell--stretch">
+        <div class="md-flex__ellipsis md-header-nav__title" data-md-component="title">
+          
+            <span class="md-header-nav__topic">
+              Application Modernization
+            </span>
+            <span class="md-header-nav__topic">
+              
+                Liberty - Deploy using Tekton (OpenShift Pipelines) and ArgoCD on OCP 4.3
+              
+            </span>
+          
+        </div>
+      </div>
+      <div class="md-flex__cell md-flex__cell--shrink">
+        
+          <label class="md-icon md-icon--search md-header-nav__button" for="__search"></label>
+          
+<div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" aria-label="search" name="query" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="query" data-md-state="active">
+      <label class="md-icon md-search__icon" for="__search"></label>
+      <button type="reset" class="md-icon md-search__icon" data-md-component="reset" tabindex="-1">
+        &#xE5CD;
+      </button>
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="result">
+          <div class="md-search-result__meta">
+            Type to start searching
+          </div>
+          <ol class="md-search-result__list"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+        
+      </div>
+      
+        <div class="md-flex__cell md-flex__cell--shrink">
+          <div class="md-header-nav__source">
+            
+
+
+  
+
+<a href="https://github.com/ibm-cloud-architecture/cloudpak-for-applications/" title="Go to repository" class="md-source" data-md-source="github">
+  
+    <div class="md-source__icon">
+      <svg viewBox="0 0 24 24" width="24" height="24">
+        <use xlink:href="#__github" width="24" height="24"></use>
+      </svg>
+    </div>
+  
+  <div class="md-source__repository">
+    ibm-cloud-architecture/cloudpak-for-applications
+  </div>
+</a>
+          </div>
+        </div>
+      
+    </div>
+  </nav>
+</header>
+    
+    <div class="md-container">
+      
+        
+      
+      
+      <main class="md-main" role="main">
+        <div class="md-main__inner md-grid" data-md-component="container">
+          
+            
+              <div class="md-sidebar md-sidebar--primary" data-md-component="navigation">
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    <nav class="md-nav md-nav--primary" data-md-level="0">
+  <label class="md-nav__title md-nav__title--site" for="__drawer">
+    <a href="../.." title="Application Modernization" class="md-nav__button md-logo">
+      
+        <i class="md-icon"></i>
+      
+    </a>
+    Application Modernization
+  </label>
+  
+    <div class="md-nav__source">
+      
+
+
+  
+
+<a href="https://github.com/ibm-cloud-architecture/cloudpak-for-applications/" title="Go to repository" class="md-source" data-md-source="github">
+  
+    <div class="md-source__icon">
+      <svg viewBox="0 0 24 24" width="24" height="24">
+        <use xlink:href="#__github" width="24" height="24"></use>
+      </svg>
+    </div>
+  
+  <div class="md-source__repository">
+    ibm-cloud-architecture/cloudpak-for-applications
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+      
+
+
+  <li class="md-nav__item">
+    <a href="../.." title="Introduction" class="md-nav__link">
+      Introduction
+    </a>
+  </li>
+
+    
+      
+      
+      
+
+
+  <li class="md-nav__item">
+    <a href="../" title="Runtime modernization" class="md-nav__link">
+      Runtime modernization
+    </a>
+  </li>
+
+    
+      
+      
+      
+
+
+  <li class="md-nav__item">
+    <a href="../../spring/" title="Spring modernization" class="md-nav__link">
+      Spring modernization
+    </a>
+  </li>
+
+    
+      
+      
+      
+
+
+  <li class="md-nav__item">
+    <a href="../../was90/" title="Operational modernization" class="md-nav__link">
+      Operational modernization
+    </a>
+  </li>
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="toc">
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+<nav class="md-nav md-nav--secondary">
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">Table of contents</label>
+    <ul class="md-nav__list" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#deploy-the-application" class="md-nav__link">
+    Deploy the Application
+  </a>
+  
+    <nav class="md-nav">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#prerequisites" class="md-nav__link">
+    Prerequisites
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#fork-the-appmod-gitops-repository" class="md-nav__link">
+    Fork the appmod-gitops repository
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#create-a-github-access-token" class="md-nav__link">
+    Create a github access token
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#getting-the-project-repository" class="md-nav__link">
+    Getting the project repository
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#create-application-database-infrastructure" class="md-nav__link">
+    Create application database infrastructure
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#create-the-security-context-constraint" class="md-nav__link">
+    Create the Security Context Constraint
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#create-the-build-project" class="md-nav__link">
+    Create the build project
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#create-a-secret-for-your-github-access-token" class="md-nav__link">
+    Create a secret for your github access token
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#create-a-service-account" class="md-nav__link">
+    Create a service account
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#import-the-tekton-resources" class="md-nav__link">
+    Import the Tekton resources
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#create-the-dev-project" class="md-nav__link">
+    Create the dev project
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#create-a-service-account_1" class="md-nav__link">
+    Create a service account
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#update-the-service-account" class="md-nav__link">
+    Update the service account
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#update-the-argocd-service-account" class="md-nav__link">
+    Update the argocd service account
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#configure-argocd" class="md-nav__link">
+    Configure ArgoCD
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#run-the-pipeline" class="md-nav__link">
+    Run the pipeline
+  </a>
+  
+    <nav class="md-nav">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#view-the-pipeline-logs" class="md-nav__link">
+    View the pipeline logs
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#validate-the-application-in-the-pipeline-namespace" class="md-nav__link">
+    Validate the application in the pipeline namespace
+  </a>
+  
+    <nav class="md-nav">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#topology" class="md-nav__link">
+    Topology
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#trigger-the-argocd-synchronization-of-the-dev-namespace" class="md-nav__link">
+    Trigger the ArgoCD synchronization of the dev namespace
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#validate-the-application-in-the-dev-namespace" class="md-nav__link">
+    Validate the application in the dev namespace
+  </a>
+  
+    <nav class="md-nav">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#topology_1" class="md-nav__link">
+    Topology
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#review-and-next-steps" class="md-nav__link">
+    Review and Next Steps
+  </a>
+  
+</li>
+      
+      
+      
+      
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          <div class="md-content">
+            <article class="md-content__inner md-typeset">
+              
+                
+                  <a href="https://github.com/ibm-cloud-architecture/cloudpak-for-applications/edit/master/docs/liberty/liberty-deploy-tekton-argocd.md" title="Edit this page" class="md-icon md-content__icon">&#xE3C9;</a>
+                
+                
+                <h1 id="liberty-deploy-using-tekton-openshift-pipelines-and-argocd-on-ocp-43">Liberty - Deploy using Tekton (OpenShift Pipelines) and ArgoCD on OCP 4.3</h1>
+<p>This section covers how to deploy the application to RedHat OpenShift 4.3 using a Tekton (OpenShift Pipelines) CI pipeline and ArgoCD. The diagram below shows the flow of the pipeline which starts when the developer checks their code in to Git and ends with the application being deployed in build and dev namespaces.</p>
+<p>The diagram below shows the following flow:</p>
+<ul>
+<li>
+<p>1) A developer commits code to the <code>application repository</code></p>
+</li>
+<li>
+<p>2) A webhook starts a <code>tekton pipeline</code> running in the <code>build</code> project</p>
+</li>
+<li>
+<p>3) A <code>tekton task</code> clones the application source code (4) from the application repository, uses <code>Maven</code> to compile and test the application before using <code>buildah</code> to create a <code>Docker image</code> which is pushed to the docker registry (5)</p>
+</li>
+<li>
+<p>6) A <code>tekton task</code> deploys the <code>application</code> to the local namespace using the image from the <code>docker registry</code> (7)</p>
+</li>
+<li>
+<p>8) A <code>tekton task</code> updates the <code>gitops repository</code> with the <code>docker image tag</code> for the newly created docker image and commits the change (9)</p>
+</li>
+<li>
+<p>10) ArgoCD is used to <code>synchronize</code> the changes from the gitops repository with the <code>dev</code> namespace</p>
+</li>
+<li>
+<p>11) The application running in the <code>dev</code> namespace is updated with the latest docker image from the registry</p>
+</li>
+</ul>
+<p><img alt="Pipeline" src="../images/argo-flow.jpg" /></p>
+<h2 id="deploy-the-application">Deploy the Application</h2>
+<p>The following steps will deploy the modernized Customer Order Services application in a WebSphere Liberty container to a RedHat OpenShift cluster.</p>
+<h3 id="prerequisites">Prerequisites</h3>
+<p>You will need the following:</p>
+<ul>
+<li><a href="https://git-scm.com/book/en/v2/Getting-Started-Installing-Git">Git CLI</a></li>
+<li>Red Hat OpenShift Container Platfrom 4.3 with Cluster Admin permissions</li>
+<li><a href="https://docs.openshift.com/container-platform/3.11/cli_reference/get_started_cli.html">oc CLI</a></li>
+<li>DB2 Database</li>
+<li><a href="../OpenShiftPipelinesInstall/">Red Hat OpenShift Pipelines</a></li>
+<li><a href="https://github.com/tektoncd/cli">Tekton CLI</a></li>
+<li><a href="https://argoproj.github.io/argo-cd/cli_installation/">ArgoCD CLI</a></li>
+<li><a href="../ArgoCDInstall/">ArgoCD</a></li>
+</ul>
+<h3 id="fork-the-appmod-gitops-repository">Fork the appmod-gitops repository</h3>
+<p>Fork the <a href="https://github.com/ibm-cloud-architecture/appmod-gitops">appmod-gitops</a> GitHub repository in to your own github.com account</p>
+<ul>
+<li>
+<p>Navigate to the <a href="https://github.com/ibm-cloud-architecture/appmod-gitops">appmod-gitops</a> GitHub repository</p>
+</li>
+<li>
+<p>Click <strong>Fork</strong></p>
+</li>
+</ul>
+<p><img alt="Run Pipeline" src="../images/tekton-argo/fork1.jpg" /></p>
+<ul>
+<li>Select the <strong>Target</strong> and wait for the fork process to complete</li>
+</ul>
+<h3 id="create-a-github-access-token">Create a github access token</h3>
+<p>You will need to grant ArgoCD access to make changes to the newly forked Github repository</p>
+<ul>
+<li>
+<p>Click on your GitHub.com account dropdown in the top right corner and select <strong>Settings</strong></p>
+</li>
+<li>
+<p>Select <strong>Developer settings</strong> from the menu and then select <strong>Personal Access Tokens</strong></p>
+</li>
+<li>
+<p>Click <strong>Generate new token</strong></p>
+</li>
+</ul>
+<p><img alt="Token" src="../images/tekton-argo/token2.jpg" /></p>
+<ul>
+<li>Enter a <code>name</code> for the token in the <code>Note</code> field and select the <code>repo</code> scope as shown below. No other scopes are required. Click <strong>Generate token</strong></li>
+</ul>
+<p><img alt="Token 2" src="../images/tekton-argo/token3.jpg" /></p>
+<ul>
+<li><strong>Copy</strong> the token and <strong>keep</strong> it for a later step. This is the only time the token will be visible to you.</li>
+</ul>
+<p><img alt="Token 3" src="../images/tekton-argo/token4.jpg" /></p>
+<h3 id="getting-the-project-repository">Getting the project repository</h3>
+<p>You can clone the repository from its main GitHub repository page and checkout the appropriate branch for this version of the application.</p>
+<div class="codehilite"><pre><span></span><code><span class="err">git clone https://github.com/ibm-cloud-architecture/appmod-liberty-tekton.git</span>
+<span class="err">cd appmod-liberty-tekton</span>
+</code></pre></div>
+
+
+<h3 id="create-application-database-infrastructure">Create application database infrastructure</h3>
+<p>As said in the prerequisites section above, the Customer Order Services application uses uses DB2 as its database. Follow these steps to create the appropriate database, tables and data the application needs to:</p>
+<ul>
+<li>
+<p>Copy the createOrderDB.sql and initialDataSet.sql files you can find in the Common directory of this repository over to the db2 host machine (or git clone the repository) in order to execute them later.</p>
+</li>
+<li>
+<p>ssh into the db2 host</p>
+</li>
+<li>
+<p>Change to the db2 instance user: `su {database_instance_name}``</p>
+</li>
+<li>
+<p>Start db2: <code>db2start</code></p>
+</li>
+<li>
+<p>Create the ORDERDB database: <code>db2 create database ORDERDB</code></p>
+</li>
+<li>
+<p>Connect to the ORDERDB database: <code>db2 connect to ORDERDB</code></p>
+</li>
+<li>
+<p>Execute the createOrderDB.sql script you copied over in step 1 in order to create the appropriate tables, relationships, primary keys, etc: <code>db2 -tf createOrderDB.sql</code></p>
+</li>
+<li>
+<p>Execute the initialDataSet.sql script you copied over in step 1 to populate the ORDERDB database with the needed initial data set: <code>db2 -tf initialDataSet.sql</code></p>
+</li>
+</ul>
+<p>If you want to re-run the scripts, please make sure you drop the databases and create them again.</p>
+<h3 id="create-the-security-context-constraint">Create the Security Context Constraint</h3>
+<p>In order to deploy and run the WebSphere Liberty Docker image in an OpenShift cluster, we first need to configure certain security aspects for the cluster. The <code>Security Context Constraint</code> provided <a href="https://github.com/ibm-cloud-architecture/appmod-liberty-tekton/blob/master/Deployment/OpenShift/ssc.yaml">here</a> grants the <a href="https://kubernetes.io/docs/tasks/configure-pod-container/configure-service-account/">service account</a> that the WebSphere Liberty Docker container is running under the required privileges to function correctly.</p>
+<p>A <strong>cluster administrator</strong> can use the file provided <a href="https://github.com/ibm-cloud-architecture/appmod-liberty-tekton/blob/master/Deployment/OpenShift/ssc.yaml">here</a> with the following command to create the Security Context Constraint (SCC):</p>
+<div class="codehilite"><pre><span></span><code><span class="err">cd Deployment/OpenShift</span>
+<span class="err">oc apply -f ssc.yaml</span>
+</code></pre></div>
+
+
+<h3 id="create-the-build-project">Create the build project</h3>
+<p>Create the project that will be used for the Tekton pipeline and the initial deployment of the application.</p>
+<p>Issue the command shown below to create the project:</p>
+<div class="codehilite"><pre><span></span><code><span class="err">oc new-project cos-liberty-tekton</span>
+</code></pre></div>
+
+
+<h3 id="create-a-secret-for-your-github-access-token">Create a secret for your github access token</h3>
+<p>Edit the <code>tekton/tekton-argo/appmod-github-secret.yaml</code> file and set your <code>username</code> (to your github.com username) and <code>password</code> (to your <strong>access token</strong> created earlier)</p>
+<div class="codehilite"><pre><span></span><code><span class="n">apiVersion</span><span class="o">:</span> <span class="n">v1</span>
+<span class="n">kind</span><span class="o">:</span> <span class="n">Secret</span>
+<span class="n">metadata</span><span class="o">:</span>
+  <span class="n">name</span><span class="o">:</span> <span class="n">dm</span><span class="o">-</span><span class="n">github</span>
+  <span class="n">annotations</span><span class="o">:</span>
+    <span class="n">tekton</span><span class="o">.</span><span class="na">dev</span><span class="sr">/git-0: https://gi</span><span class="n">thub</span><span class="o">.</span><span class="na">com</span> <span class="err">#</span> <span class="n">Described</span> <span class="n">below</span>
+<span class="n">type</span><span class="o">:</span> <span class="n">kubernetes</span><span class="o">.</span><span class="na">io</span><span class="o">/</span><span class="n">basic</span><span class="o">-</span><span class="n">auth</span>
+<span class="n">stringData</span><span class="o">:</span>
+  <span class="n">username</span><span class="o">:</span> <span class="n">xxxxx</span>  
+  <span class="n">password</span><span class="o">:</span> <span class="n">xxxxx</span>
+</code></pre></div>
+
+
+<p>Execute the commands below to create the secret and bind it to the service account that Tekton will be using to execute the Tasks.</p>
+<div class="codehilite"><pre><span></span><code><span class="err">cd tekton/tekton-argo</span>
+<span class="err">oc apply -f appmod-github-secret.yaml</span>
+<span class="err">oc patch serviceaccount pipeline -p &#39;{&quot;secrets&quot;: [{&quot;name&quot;: &quot;appmod-github&quot;}]}&#39;</span>
+</code></pre></div>
+
+
+<h3 id="create-a-service-account">Create a service account</h3>
+<p>It is a good Kubernetes practice to create a <a href="https://kubernetes.io/docs/tasks/configure-pod-container/configure-service-account/">service account</a> for your applications. A service account provides an identity for processes that run in a Pod. In this step we will create a new service account with the name <code>websphere</code> and add the Security Context Constraint created above to it.</p>
+<p>Issue the commands shown below to create the <code>websphere</code> service account and bind the ibm-websphere-scc to it in each of the projects:</p>
+<div class="codehilite"><pre><span></span><code><span class="err">oc create serviceaccount websphere -n cos-liberty-tekton</span>
+<span class="err">oc adm policy add-scc-to-user ibm-websphere-scc -z websphere -n cos-liberty-tekton</span>
+</code></pre></div>
+
+
+<h3 id="import-the-tekton-resources">Import the Tekton resources</h3>
+<p>Import the Tekton <code>Tasks</code>, <code>Pipeline</code> and <code>PipelineResources</code> in to the project using the commands shown below:</p>
+<div class="codehilite"><pre><span></span><code><span class="err">oc apply -f gse-apply-manifests-pvc-task.yaml</span>
+<span class="err">oc apply -f gse-gitops-pvc-task.yaml</span>
+<span class="err">oc apply -f gse-buildah-pvc-task.yaml</span>
+<span class="err">oc apply -f gse-build-gitops-pvc-pipeline.yaml</span>
+<span class="err">oc apply -f gse-build-pipeline-resources.yaml</span>
+</code></pre></div>
+
+
+<h3 id="create-the-dev-project">Create the dev project</h3>
+<p>Create the project that will be used for the <code>development</code> version of the application that will be deployed by <code>ArgoCD</code>.</p>
+<p>Issue the command shown below to create the project:</p>
+<div class="codehilite"><pre><span></span><code><span class="err">oc new-project cos-liberty-dev</span>
+</code></pre></div>
+
+
+<h3 id="create-a-service-account_1">Create a service account</h3>
+<p>Create a <code>websphere</code> service account in the new project using the commands below:</p>
+<div class="codehilite"><pre><span></span><code><span class="err">oc create serviceaccount websphere -n cos-liberty-dev</span>
+<span class="err">oc adm policy add-scc-to-user ibm-websphere-scc -z websphere -n cos-liberty-dev</span>
+</code></pre></div>
+
+
+<h3 id="update-the-service-account">Update the service account</h3>
+<p>In order to <code>pull</code> the image that is created by the pipeline (which is in the <code>cos-liberty-tekton</code> namespace) a <code>role</code> must be added to the service account using the command shown below:</p>
+<div class="codehilite"><pre><span></span><code><span class="err">oc policy add-role-to-group system:image-puller system:serviceaccounts:cos-liberty-dev --namespace=cos-liberty-tekton</span>
+</code></pre></div>
+
+
+<h3 id="update-the-argocd-service-account">Update the argocd service account</h3>
+<p>Use the command below to grant the <code>argocd-application-controller</code> access to the <code>cos-liberty-dev</code> namespace to make changes:</p>
+<div class="codehilite"><pre><span></span><code><span class="err">oc policy add-role-to-user edit system:serviceaccount:argocd:argocd-application-controller -n cos-liberty-dev</span>
+</code></pre></div>
+
+
+<h3 id="configure-argocd">Configure ArgoCD</h3>
+<p>In this step you will import a defintion of the cos-liberty application in to ArgoCD</p>
+<ul>
+<li>Log in to ArgoCD using the CLI as the admin user.</li>
+</ul>
+<div class="codehilite"><pre><span></span><code><span class="err">argocd login --insecure &lt;url of your argocd server&gt;</span>
+</code></pre></div>
+
+
+<ul>
+<li>Edit the <code>tekton/tekton-argo/argo-project.yaml</code> file and set your <code>repoURL</code> (to the URL of your forked repository from earlier)</li>
+</ul>
+<div class="codehilite"><pre><span></span><code><span class="n">apiVersion</span><span class="o">:</span> <span class="n">argoproj</span><span class="o">.</span><span class="na">io</span><span class="o">/</span><span class="n">v1alpha1</span>
+<span class="n">kind</span><span class="o">:</span> <span class="n">Application</span>
+<span class="n">metadata</span><span class="o">:</span>
+  <span class="n">name</span><span class="o">:</span> <span class="n">cos</span><span class="o">-</span><span class="n">liberty</span>
+  <span class="kd">namespace</span><span class="o">:</span> <span class="n">argocd</span>
+<span class="n">spec</span><span class="o">:</span>
+  <span class="n">project</span><span class="o">:</span> <span class="k">default</span>
+  <span class="n">source</span><span class="o">:</span>
+    <span class="n">repoURL</span><span class="o">:</span> <span class="n">https</span><span class="o">://</span><span class="n">github</span><span class="o">.</span><span class="na">com</span><span class="sr">/davemulley/</span><span class="n">test</span><span class="o">-</span><span class="n">gitops</span>
+    <span class="n">path</span><span class="o">:</span> <span class="n">cos</span><span class="o">-</span><span class="n">liberty</span><span class="o">/</span><span class="n">dev</span>
+    <span class="n">targetRevision</span><span class="o">:</span> <span class="n">HEAD</span>
+    <span class="n">directory</span><span class="o">:</span>
+      <span class="n">recurse</span><span class="o">:</span> <span class="kc">true</span>
+      <span class="n">jsonnet</span><span class="o">:</span> <span class="o">{}</span>
+  <span class="n">destination</span><span class="o">:</span>
+    <span class="n">server</span><span class="o">:</span> <span class="n">https</span><span class="o">://</span><span class="n">kubernetes</span><span class="o">.</span><span class="na">default</span><span class="o">.</span><span class="na">svc</span>
+    <span class="kd">namespace</span><span class="o">:</span> <span class="n">cos</span><span class="o">-</span><span class="n">liberty</span><span class="o">-</span><span class="n">dev</span>
+</code></pre></div>
+
+
+<ul>
+<li>Execute the following command to create the application definition in ArgoCD</li>
+</ul>
+<div class="codehilite"><pre><span></span><code><span class="err">argocd app create cos-liberty -f argo-project.yaml</span>
+</code></pre></div>
+
+
+<ul>
+<li>Log in to the ArgoCD UI as the <code>admin</code> user and validate that the application is shown on the <strong>Applications</strong> view</li>
+</ul>
+<p><img alt="Pipeline" src="../images/tekton-argo/argo-0.jpg" /></p>
+<h2 id="run-the-pipeline">Run the pipeline</h2>
+<p>The recommended way to trigger the pipeline would be via a webhook (<strong>link</strong>) but for simplicity the command line can be used. Issue the command below (replace the <code>GITOPS_REPO</code> value with the URL of your forked repository from earlier) to trigger the pipeline and accept the default values for <code>source</code> and <code>image</code></p>
+<div class="codehilite"><pre><span></span><code><span class="err">tkn pipeline start  gse-build-gitops-pvc-pipeline -p GITOPS_REPO=&quot;https://github.com/davemulley/test-gitops.git&quot; -n cos-liberty-tekton</span>
+</code></pre></div>
+
+
+<p>When prompted, accept the default <code>git-source</code> value as shown below:</p>
+<p><img alt="Pipeline" src="../images/tekton-only/start-1.jpg" /></p>
+<p>When prompted, accept the default <code>docker-image</code> value as shown below:</p>
+<p><img alt="Pipeline1" src="../images/tekton-only/start-2.jpg" /></p>
+<h3 id="view-the-pipeline-logs">View the pipeline logs</h3>
+<ul>
+<li>In the OpenShift Container Platform UI, change to the <strong>Developer</strong> view, select the <code>cos-liberty-tekton</code> project and then select <strong>Pipelines</strong>. Click on the <strong>Last Run</strong></li>
+</ul>
+<p><img alt="Pipeline" src="../images/tekton-argo/run-1.jpg" /></p>
+<ul>
+<li>Select <strong>Logs</strong></li>
+</ul>
+<p><img alt="Pipeline Logs" src="../images/tekton-argo/run-2.jpg" /></p>
+<ul>
+<li>The pipeline will execute and the logs will be displayed</li>
+</ul>
+<p><img alt="Pipeline Logs" src="../images/tekton-argo/run-3.jpg" /></p>
+<ul>
+<li>Once both the <code>gse-build</code>, <code>gse-apply-manifests</code> and <code>gse-gitops</code> steps are complete, the pipeline is finished.</li>
+</ul>
+<h3 id="validate-the-application-in-the-pipeline-namespace">Validate the application in the pipeline namespace</h3>
+<p>Now that the pipeline is complete, validate the Customer Order Services application is deployed and running in <code>cos-liberty-tekton</code> project</p>
+<ul>
+<li>In the OpenShift Console, navigate to <strong>Topology</strong> view and click on the <code>cos-liberty</code> DeploymentConfig to view deployment details, including <code>Pods</code> <code>Services</code> and <code>Routes</code></li>
+</ul>
+<h4 id="topology">Topology</h4>
+<p><img alt="Deployment" src="../images/tekton-only/validate-1.jpg" /></p>
+<ul>
+<li>From this view you can also view the <strong>route</strong> for the application. Note that the URL is &lt; application_name &gt;-&lt; project_name &gt;.&lt; ocp cluster url &gt;. In this case the project name is <code>cos-liberty-tekton</code></li>
+</ul>
+<p><img alt="Route" src="../images/tekton-only/route.jpg" /></p>
+<ul>
+<li>Add <code>/CustomerOrderServicesWeb</code> to the end of the URL in the browser to access the application</li>
+</ul>
+<p><img alt="Dev Running" src="../images/liberty-deploy/dev-running.jpg" /></p>
+<ul>
+<li>Log in to the application with <code>username: rbarcia</code> and <code>password: bl0wfish</code></li>
+</ul>
+<h3 id="trigger-the-argocd-synchronization-of-the-dev-namespace">Trigger the ArgoCD synchronization of the dev namespace</h3>
+<ul>
+<li>In the ArgoCD UI, navigate to the <strong>applications</strong> view and click <strong>SYNC</strong> on the <code>cos-liberty</code> application</li>
+</ul>
+<p><img alt="Pipeline" src="../images/tekton-argo/argo-1.jpg" /></p>
+<ul>
+<li>On the panel that is displayed, click <strong>SYNCHRONIZE</strong> to synchronize all of the artifacts in to the <code>cos-liberty-dev</code> namespace</li>
+</ul>
+<p><img alt="Pipeline" src="../images/tekton-argo/argo-2.jpg" /></p>
+<ul>
+<li>Note that the <strong>Status</strong> is quickly shown as <strong>Healthy, Synced</strong></li>
+</ul>
+<p><img alt="Pipeline" src="../images/tekton-argo/argo-3.jpg" /></p>
+<ul>
+<li>Click on the <strong>cos-liberty</strong> application to drill-down to the more detailed view and note that the <code>deploymentconfig</code>, <code>service</code> and <code>route</code> have been created. Watch the application pod on the right be deployed and after a short while show as running</li>
+</ul>
+<p><img alt="Pipeline" src="../images/tekton-argo/arg0-4.jpg" /></p>
+<h3 id="validate-the-application-in-the-dev-namespace">Validate the application in the dev namespace</h3>
+<ul>
+<li>
+<p>In the OpenShift Console, navigate to the <strong>cos-liberty-dev</strong> project</p>
+</li>
+<li>
+<p>Now navigate to the <strong>Topology</strong> view and click on the <code>cos-liberty</code> DeploymentConfig to view deployment details, including <code>Pods</code> <code>Services</code> and <code>Routes</code></p>
+</li>
+</ul>
+<h4 id="topology_1">Topology</h4>
+<p><img alt="Deployment" src="../images/tekton-argo/run-4.jpg" /></p>
+<ul>
+<li>From this view you can also view the <strong>route</strong> for the application. Note that the URL is &lt; application_name &gt;-&lt; project_name &gt;.&lt; ocp cluster url &gt;. In this case the project name is <code>cos-liberty-dev</code></li>
+</ul>
+<p><img alt="Route" src="../images/tekton-argo/run-5.jpg" /></p>
+<ul>
+<li>Add <code>/CustomerOrderServicesWeb</code> to the end of the URL in the browser to access the application</li>
+</ul>
+<p><img alt="Dev Running" src="../images/liberty-deploy/dev-running.jpg" /></p>
+<ul>
+<li>Log in to the application with <code>username: rbarcia</code> and <code>password: bl0wfish</code></li>
+</ul>
+<h2 id="review-and-next-steps">Review and Next Steps</h2>
+<p>In this section you configured a CI/CD pipeline for the CustomerOrderServices application that builds a single immutable image for the latest version of the application and then deploys it to a dev environment.  </p>
+                
+                  
+                
+                
+              
+              
+                
+
+
+              
+            </article>
+          </div>
+        </div>
+      </main>
+      
+        
+<footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-footer-copyright">
+        
+        powered by
+        <a href="https://www.mkdocs.org" target="_blank" rel="noopener">MkDocs</a>
+        and
+        <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+          Material for MkDocs</a>
+      </div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    
+      <script src="../../assets/javascripts/application.c33a9706.js"></script>
+      
+      <script>app.initialize({version:"1.1",url:{base:"../.."}})</script>
+      
+    
+  </body>
+</html>
